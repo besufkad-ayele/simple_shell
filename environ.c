@@ -1,49 +1,75 @@
 #include "shell.h"
 
+char **_copyenv(void);
+void free_env(void);
+char **_getenv(const char *var);
+
 /**
- * find_command - finds command to execute in path routes.
- * @command: first position of getline input.
- *		some additional commands 
- *Return: string of folder for command to be executed.
+ * _copyenv - Creates a copy of the environment.
  *
-
- **/
-char *find_command(char *command)
+ * Return: If an error occurs - NULL.
+ *         O/w - a double pointer to the new copy.
+ */
+char **_copyenv(void)
 {
-	DIR *folder;
-	int i;
-	struct dirent *entry;
-	
-	char **split = malloc(sizeof(char) * 1024);
-	char *cmd, comp, **str  = malloc(sizeof(char) * 1024);
+	char **new_environ;
+	size_t size;
+	int index;
 
-	while (*environ != NULL)
+	for (size = 0; environ[size]; size++)
+		;
+
+	new_environ = malloc(sizeof(char *) * (size + 1));
+	if (!new_environ)
+		return (NULL);
+
+	for (index = 0; environ[index]; index++)
 	{
-		if (!(_strcmpdir(*environ, "PATH")))
+		new_environ[index] = malloc(_strlen(environ[index]) + 1);
+
+		if (!new_environ[index])
 		{
-			*str = *environ;
-			for (i = 0; i < 9; i++, split++, str++)
-			{
-				*split = strtok(*str, ":='PATH'");
-				folder = opendir(*split);
-				if (folder == NULL)
-				{
-					perror("Unable to read directory");
-				}
-				while ((entry = readdir(folder)))
-				{
-					cmd = entry->d_name;
-					comp = _strcmpdir(cmd, command);
-					if (comp == 0)
-					{
-						return (*split);
-					}
-					if (cmd == NULL)
-					{
-						perror("Error");
-					}}}}
-		environ++;
+			for (index--; index >= 0; index--)
+				free(new_environ[index]);
+			free(new_environ);
+			return (NULL);
+		}
+		_strcpy(new_environ[index], environ[index]);
 	}
-	return ("Error: Not Found");
+	new_environ[index] = NULL;
+
+	return (new_environ);
 }
 
+/**
+ * free_env - Frees the the environment copy.
+ */
+void free_env(void)
+{
+	int index;
+
+	for (index = 0; environ[index]; index++)
+		free(environ[index]);
+	free(environ);
+}
+
+/**
+ * _getenv - Gets an environmental variable from the PATH.
+ * @var: The name of the environmental variable to get.
+ *
+ * Return: If the environmental variable does not exist - NULL.
+ *         Otherwise - a pointer to the environmental variable.
+ */
+char **_getenv(const char *var)
+{
+	int index, len;
+
+	len = _strlen(var);
+	for (index = 0; environ[index]; index++)
+	{
+		if (_strncmp(var, environ[index], len) == 0)
+			return (&environ[index]);
+	}
+
+	return (NULL);
+}
