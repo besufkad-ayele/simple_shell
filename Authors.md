@@ -1,4 +1,4 @@
 The collaborators in this project are:-
 -------
-Samuel tefera and
-Hanna Tesfaye
+Besufkad Ayele Weldegiorgis and
+Marseden

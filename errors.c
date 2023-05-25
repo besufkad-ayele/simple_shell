@@ -4,34 +4,6 @@ int num_len(int num);
 char *_itoa(int num);
 int create_error(char **args, int err);
 
-/**
- * num_len - Counts the digit length of a number.
- * @num: The number to measure.
- *
- * Return: The digit length.
- */
-int num_len(int num)
-{
-	unsigned int num1;
-	int len = 1;
-
-	if (num < 0)
-	{
-		len++;
-		num1 = num * -1;
-	}
-	else
-	{
-		num1 = num;
-	}
-	while (num1 > 9)
-	{
-		len++;
-		num1 /= 10;
-	}
-
-	return (len);
-}
 
 /**
  * _itoa - Converts an integer to a string.
@@ -71,6 +43,36 @@ char *_itoa(int num)
 	return (buffer);
 }
 
+/**
+
+ * num_len - Counts the digit length of a number.
+ * @num: The number to measure.
+
+ *
+ * Return: The digit length.
+ */
+int num_len(int num)
+{
+	unsigned int num1;
+	int len = 1;
+
+	if (num < 0)
+	{
+		len++;
+		num1 = num * -1;
+	}
+	else
+	{
+		num1 = num;
+	}
+	while (num1 > 9)
+	{
+		len++;
+		num1 /= 10;
+	}
+
+	return (len);
+}
 
 /**
  * create_error - Writes to stderr.
