@@ -40,7 +40,28 @@ char *error_env(char **args)
 	return (error);
 }
 
+/**
+ * error_1 - Creates an error message for shellby_alias errors.
+ * @args: An array of arguments passed to the command.
+ *
+ * Return: The error string.
+ */
+char *error_1(char **args)
+{
+	char *error;
+	int len;
 
+	len = _strlen(name) + _strlen(args[0]) + 13;
+	error = malloc(sizeof(char) * (len + 1));
+	if (!error)
+		return (NULL);
+
+	_strcpy(error, "alias: ");
+	_strcat(error, args[0]);
+	_strcat(error, " not found\n");
+
+	return (error);
+}
 
 /**
  * error_2_exit - Creates an error message for shellby_exit errors.
@@ -112,30 +133,6 @@ char *error_2_cd(char **args)
 	_strcat(error, "\n");
 
 	free(hist_str);
-	return (error);
-}
-
-/**
- * error_1 - Creates an error message for shellby_alias errors.
- * @args: An array of arguments passed to the command.
-
- *
- * Return: The error string.
- */
-char *error_1(char **args)
-{
-	char *error;
-	int len;
-
-	len = _strlen(name) + _strlen(args[0]) + 13;
-	error = malloc(sizeof(char) * (len + 1));
-	if (!error)
-		return (NULL);
-
-	_strcpy(error, "alias: ");
-	_strcat(error, args[0]);
-	_strcat(error, " not found\n");
-
 	return (error);
 }
 

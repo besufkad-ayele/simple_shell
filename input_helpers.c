@@ -6,6 +6,40 @@ int run_args(char **args, char **front, int *exe_ret);
 int handle_args(int *exe_ret);
 int check_args(char **args);
 
+/**
+ * get_args - Gets a command from standard input.
+ * @line: A buffer to store the command.
+ * @exe_ret: The return value of the last executed command.
+ *
+ * Return: If an error occurs - NULL.
+ *         Otherwise - a pointer to the stored command.
+ */
+char *get_args(char *line, int *exe_ret)
+{
+	size_t n = 0;
+	ssize_t read;
+	char *prompt = "$ ";
+
+	if (line)
+		free(line);
+
+	read = _getline(&line, &n, STDIN_FILENO);
+	if (read == -1)
+		return (NULL);
+	if (read == 1)
+	{
+		hist++;
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, prompt, 2);
+		return (get_args(line, exe_ret));
+	}
+
+	line[read - 1] = '\0';
+	variable_replacement(&line, exe_ret);
+	handle_line(&line, read);
+
+	return (line);
+}
 
 /**
  * call_args - Partitions operators from commands and calls them.
@@ -66,38 +100,38 @@ int call_args(char **args, char **front, int *exe_ret)
 }
 
 /**
- * get_args - Gets a command from standard input.
- * @line: A buffer to store the command.
- * @exe_ret: The return value of the last executed command.
+ * run_args - Calls the execution of a command.
+ * @args: An array of arguments.
+ * @front: A double pointer to the beginning of args.
+ * @exe_ret: The return value of the parent process' last executed command.
  *
- * Return: If an error occurs - NULL.
- *         Otherwise - a pointer to the stored command.
+ * Return: The return value of the last executed command.
  */
-char *get_args(char *line, int *exe_ret)
+int run_args(char **args, char **front, int *exe_ret)
 {
-	size_t n = 0;
-	ssize_t read;
-	char *prompt = "$ ";
+	int ret, i;
+	int (*builtin)(char **args, char **front);
 
-	if (line)
-		free(line);
+	builtin = get_builtin(args[0]);
 
-	read = _getline(&line, &n, STDIN_FILENO);
-	if (read == -1)
-		return (NULL);
-	if (read == 1)
+	if (builtin)
 	{
-		hist++;
-		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, prompt, 2);
-		return (get_args(line, exe_ret));
+		ret = builtin(args + 1, front);
+		if (ret != EXIT)
+			*exe_ret = ret;
+	}
+	else
+	{
+		*exe_ret = execute(args, front);
+		ret = *exe_ret;
 	}
 
-	line[read - 1] = '\0';
-	variable_replacement(&line, exe_ret);
-	handle_line(&line, read);
+	hist++;
 
-	return (line);
+	for (i = 0; args[i]; i++)
+		free(args[i]);
+
+	return (ret);
 }
 
 /**
@@ -173,40 +207,3 @@ int check_args(char **args)
 	}
 	return (0);
 }
-
-/**
- * run_args - Calls the execution of a command.
- * @args: An array of arguments.
- * @front: A double pointer to the beginning of args.
- * @exe_ret: The return value of the parent process' last executed command.
-
- *
- * Return: The return value of the last executed command.
- */
-int run_args(char **args, char **front, int *exe_ret)
-{
-	int ret, i;
-	int (*builtin)(char **args, char **front);
-
-	builtin = get_builtin(args[0]);
-
-	if (builtin)
-	{
-		ret = builtin(args + 1, front);
-		if (ret != EXIT)
-			*exe_ret = ret;
-	}
-	else
-	{
-		*exe_ret = execute(args, front);
-		ret = *exe_ret;
-	}
-
-	hist++;
-
-	for (i = 0; args[i]; i++)
-		free(args[i]);
-
-	return (ret);
-}
-

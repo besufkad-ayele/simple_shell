@@ -4,16 +4,22 @@ void sig_handler(int sig);
 int execute(char **args, char **front);
 
 /**
+ * sig_handler - Prints a new prompt upon a signal.
+ * @sig: The signal.
+ */
+void sig_handler(int sig)
+{
+	char *new_prompt = "\n$ ";
+
+	(void)sig;
+	signal(SIGINT, sig_handler);
+	write(STDIN_FILENO, new_prompt, 3);
+}
+
+/**
  * execute - Executes a command in a child process.
  * @args: An array of arguments.
- 			wait(&status);
-			ret = WEXITSTATUS(status);
-		}
-	}
-	if (flag)
-		free(command);
-	return (ret);
-}* @front: A double pointer to the beginning of args.
+ * @front: A double pointer to the beginning of args.
  *
  * Return: If an error occurs - a corresponding error code.
  *         O/w - The exit value of the last executed command.
@@ -47,14 +53,7 @@ int execute(char **args, char **front)
 			perror("Error child:");
 			return (1);
 		}
-			wait(&status);
-			ret = WEXITSTATUS(status);
-		}
-	}
-	if (flag)
-		free(command);
-	return (ret);
-}		if (child_pid == 0)
+		if (child_pid == 0)
 		{
 			execve(command, args, environ);
 			if (errno == EACCES)
@@ -76,26 +75,12 @@ int execute(char **args, char **front)
 }
 
 /**
- * sig_handler - Prints a new prompt upon a signal.
- * @sig: The signal.
- */
-void sig_handler(int sig)
-{
-	char *new_prompt = "\n$ ";
-
-	(void)sig;
-	signal(SIGINT, sig_handler);
-	write(STDIN_FILENO, new_prompt, 3);
-}
-
-/**
  * main - Runs a simple UNIX command interpreter.
  * @argc: The number of arguments supplied to the program.
  * @argv: An array of pointers to the arguments.
  *
  * Return: The return value of the last executed command.
  */
- 
 int main(int argc, char *argv[])
 {
 	int ret = 0, retn;
