@@ -1,6 +1,6 @@
 #include "shell.h"
 
-char **_shellby_creatcopyenv(void);
+char **_copyenv_newenv(void);
 void free_env_copy(void);
 char **_getenv_envpath(const char *var);
 
@@ -10,7 +10,7 @@ char **_getenv_envpath(const char *var);
  * Return: If an error occurs - NULL.
  *         O/w - a double pointer to the new copy.
  */
-char **_shellby_creatcopyenv(void)
+char **_copyenv_newenv(void)
 {
 	char **new_environ;
 	size_t size;

@@ -29,7 +29,7 @@ void set_alias(char *var_name, char *value)
 		if (value[j] != '\'' && value[j] != '"')
 			new_value[k++] = value[j];
 	}
-	new_value[k] = set_alias'\0';
+	new_value[k] = '\0';
 	while (temp)
 	{
 		if (_strcmp(var_name, temp->name) == 0)

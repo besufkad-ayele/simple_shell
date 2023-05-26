@@ -97,11 +97,11 @@ int shellby_envcurrent(char **args, char __attribute__((__unused__)) **front);
 int shellby_setenvcurrent(char **args, char __attribute__((__unused__)) **front);
 int shellby_unsetenvcurrent(char **args, char __attribute__((__unused__)) **front);
 int shellby_cdchanged(char **args, char __attribute__((__unused__)) **front);
-int shellprint_alias(char **args, char __attribute__((__unused__)) **front);
+int shellby_alias(char **args, char __attribute__((__unused__)) **front);
 int shellby_helpinfo(char **args, char __attribute__((__unused__)) **front);
 
 /* Builtin Helpers */
-char **_shellby_creatcopyenv(void);
+char **_copyenv_newenv(void);
 void free_env_copy(void);
 char **_getenv_envpath(const char *var);
 
