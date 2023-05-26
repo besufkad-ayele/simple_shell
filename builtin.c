@@ -19,7 +19,7 @@ int (*get_builtins(char *command))(char **args, char **front)
 		{ "setenv", shellby_setenvcurrent },
 		{ "unsetenv", shellby_unsetenvcurrent },
 		{ "cd", shellby_cdchanged },
-		{ "alias", shellprint_aliasbyvalue },
+		{ "alias", shellby_alias },
 		{ "help", shellby_helpinfo },
 		{ NULL, NULL }
 	};

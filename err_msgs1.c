@@ -41,7 +41,7 @@ char *error_envshellby(char **args)
 }
 
 /**
- * error_1_aliasbyvalue - Creates an error message for shellprint_aliasbyvalue errors.
+ * error_1_aliasbyvalue - Creates an error message for shellby_alias errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.

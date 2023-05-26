@@ -1,18 +1,18 @@
 #include "shell.h"
 
-int shellprint_aliasbyvalue(char **args, char __attribute__((__unused__)) **front);
-void set_aliasbynamevalue(char *var_name, char *value);
-void print_aliasbyvalue(alias_t *alias);
+int shellby_alias(char **args, char __attribute__((__unused__)) **front);
+void set_alias(char *var_name, char *value);
+void print_alias(alias_t *alias);
 
 /**
 
- * set_aliasbynamevalue - Will either set an existing alias 'name' with a new value,
+ * set_alias - Will either set an existing alias 'name' with a new value,
  * 'value' or creates a new alias with 'name' and 'value'.
  * @var_name: Name of the alias.
  * @value: Value of the alias. First character is a '='.
 
  */
-void set_aliasbynamevalue(char *var_name, char *value)
+void set_alias(char *var_name, char *value)
 {
 	alias_t *temp = aliases;
 	int len, j, k;
@@ -45,7 +45,7 @@ void set_aliasbynamevalue(char *var_name, char *value)
 }
 
 /**
- * shellprint_aliasbyvalue - Builtin command prints all alias or specific
+ * shellby_alias - Builtin command prints all alias or specific
  * aliases, or sets an alias.
  * @args: An array of arguments.
  * @front: A double pointer to the beginning of args.
@@ -53,7 +53,7 @@ void set_aliasbynamevalue(char *var_name, char *value)
  * Return: If an error occurs - -1.
  *         Otherwise - 0.
  */
-int shellprint_aliasbyvalue(char **args, char __attribute__((__unused__)) **front)
+int shellby_alias(char **args, char __attribute__((__unused__)) **front)
 {
 	alias_t *temp = aliases;
 	int i, ret = 0;
@@ -63,7 +63,7 @@ int shellprint_aliasbyvalue(char **args, char __attribute__((__unused__)) **fron
 	{
 		while (temp)
 		{
-			print_aliasbyvalue(temp);
+			print_alias(temp);
 			temp = temp->next;
 		}
 		return (ret);
@@ -78,7 +78,7 @@ int shellprint_aliasbyvalue(char **args, char __attribute__((__unused__)) **fron
 			{
 				if (_strcmp(args[i], temp->name) == 0)
 				{
-					print_aliasbyvalue(temp);
+					print_alias(temp);
 					break;
 				}
 				temp = temp->next;
@@ -87,17 +87,17 @@ int shellprint_aliasbyvalue(char **args, char __attribute__((__unused__)) **fron
 				ret = create_error(args + i, 1);
 		}
 		else
-			set_aliasbynamevalue(args[i], value);
+			set_alias(args[i], value);
 	}
 	return (ret);
 }
 
 
 /**
- * print_aliasbyvalue - Prints the alias in the format name='value'.
+ * print_alias - Prints the alias in the format name='value'.
  * @alias: Pointer to an alias.
  */
-void print_aliasbyvalue(alias_t *alias)
+void print_alias(alias_t *alias)
 {
 	char *alias_string;
 	int len = _strlen(alias->name) + _strlen(alias->value) + 4;
@@ -153,4 +153,3 @@ char **replace_aliasesarg(char **args)
 
 	return (args);
 }
-
