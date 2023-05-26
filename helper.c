@@ -1,16 +1,16 @@
 #include "shell.h"
 
-void free_args(char **args, char **front);
+void free_argumentsmemo(char **args, char **front);
 char *get_pid(void);
-char *get_env_value(char *beginning, int len);
-void variable_replacement(char **args, int *exe_ret);
+char *get_environment_value(char *beginning, int len);
+void var_replace(char **args, int *exe_ret);
 
 /**
- * free_args - Frees up memory taken by args.
+ * free_argumentsmemo - Frees up memory taken by args.
  * @args: A null-terminated double pointer containing commands/arguments.
  * @front: A double pointer to the beginning of args.
  */
-void free_args(char **args, char **front)
+void free_argumentsmemo(char **args, char **front)
 {
 	size_t i;
 
@@ -57,7 +57,7 @@ char *get_pid(void)
 }
 
 /**
- * get_env_value - Gets the value corresponding to an environmental variable.
+ * get_environment_value - Gets the value corresponding to an environmental variable.
  * @beginning: The environmental variable to search for.
  * @len: The length of the environmental variable to search for.
  *
@@ -66,7 +66,7 @@ char *get_pid(void)
  *
  * Description: Variables are stored in the format VARIABLE=VALUE.
  */
-char *get_env_value(char *beginning, int len)
+char *get_environment_value(char *beginning, int len)
 {
 	char **var_addr;
 	char *replacement = NULL, *temp, *var;
@@ -77,7 +77,7 @@ char *get_env_value(char *beginning, int len)
 	var[0] = '\0';
 	_strncat(var, beginning, len);
 
-	var_addr = _getenv(var);
+	var_addr = _getenv_envpath(var);
 	free(var);
 	if (var_addr)
 	{
@@ -94,7 +94,7 @@ char *get_env_value(char *beginning, int len)
 }
 
 /**
- * variable_replacement - Handles variable replacement.
+ * var_replace - Handles variable replacement.
  * @line: A double pointer containing the command and arguments.
  * @exe_ret: A pointer to the return value of the last executed command.
  *
@@ -102,7 +102,7 @@ char *get_env_value(char *beginning, int len)
  *              of the last executed program, and envrionmental variables
  *              preceded by $ with their corresponding value.
  */
-void variable_replacement(char **line, int *exe_ret)
+void var_replace(char **line, int *exe_ret)
 {
 	int j, k = 0, len;
 	char *replacement = NULL, *old_line = NULL, *new_line;
@@ -120,7 +120,7 @@ void variable_replacement(char **line, int *exe_ret)
 			}
 			else if (old_line[j + 1] == '?')
 			{
-				replacement = _itoa(*exe_ret);
+				replacement = _itoa_integer_to_string(*exe_ret);
 				k = j + 2;
 			}
 			else if (old_line[j + 1])
@@ -131,7 +131,7 @@ void variable_replacement(char **line, int *exe_ret)
 						old_line[k] != ' '; k++)
 					;
 				len = k - (j + 1);
-				replacement = get_env_value(&old_line[j + 1], len);
+				replacement = get_environment_value(&old_line[j + 1], len);
 			}
 			new_line = malloc(j + _strlen(replacement)
 					  + _strlen(&old_line[k]) + 1);

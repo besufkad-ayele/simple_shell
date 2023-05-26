@@ -2,7 +2,7 @@
 
 void handle_line(char **line, ssize_t read);
 ssize_t get_new_len(char *line);
-void logical_ops(char *line, ssize_t *new_len);
+void logical_operators(char *line, ssize_t *new_len);
 
 /**
  * handle_line - Partitions a line read from standard input as needed.
@@ -143,7 +143,7 @@ ssize_t get_new_len(char *line)
 					new_len++;
 			}
 			else
-				logical_ops(&line[i], &new_len);
+				logical_operators(&line[i], &new_len);
 		}
 		else if (current == ';')
 		{
@@ -157,11 +157,11 @@ ssize_t get_new_len(char *line)
 	return (new_len);
 }
 /**
- * logical_ops - Checks a line for logical operators "||" or "&&".
+ * logical_operators - Checks a line for logical operators "||" or "&&".
  * @line: A pointer to the character to check in the line.
  * @new_len: Pointer to new_len in get_new_len function.
  */
-void logical_ops(char *line, ssize_t *new_len)
+void logical_operators(char *line, ssize_t *new_len)
 {
 	char previous, current, next;
 

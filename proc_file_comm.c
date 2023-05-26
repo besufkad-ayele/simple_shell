@@ -1,22 +1,22 @@
 #include "shell.h"
 
-int cant_open(char *file_path);
-int proc_file_commands(char *file_path, int *exe_ret);
+int cannot_open(char *file_path);
+int proccess_file_commands(char *file_path, int *exe_ret);
 
 /**
- * cant_open - If the file doesn't exist or lacks proper permissions, print
+ * cannot_open - If the file doesn't exist or lacks proper permissions, print
  * a cant open error.
  * @file_path: Path to the supposed file.
  *
  * Return: 127.
  */
 
-int cant_open(char *file_path)
+int cannot_open(char *file_path)
 {
 	char *error, *hist_str;
 	int len;
 
-	hist_str = _itoa(hist);
+	hist_str = _itoa_integer_to_string(hist);
 	if (!hist_str)
 		return (127);
 
@@ -42,7 +42,7 @@ int cant_open(char *file_path)
 }
 
 /**
- * proc_file_commands - Takes a file and attempts to run the commands stored
+ * proccess_file_commands - Takes a file and attempts to run the commands stored
  * within.
  * @file_path: Path to the file.
  * @exe_ret: Return value of the last executed command.
@@ -51,7 +51,7 @@ int cant_open(char *file_path)
  *	   If malloc fails - -1.
  *	   Otherwise the return value of the last command ran.
  */
-int proc_file_commands(char *file_path, int *exe_ret)
+int proccess_file_commands(char *file_path, int *exe_ret)
 {
 	ssize_t file, b_read, i;
 	unsigned int line_size = 0;
@@ -64,7 +64,7 @@ int proc_file_commands(char *file_path, int *exe_ret)
 	file = open(file_path, O_RDONLY);
 	if (file == -1)
 	{
-		*exe_ret = cant_open(file_path);
+		*exe_ret = cannot_open(file_path);
 		return (*exe_ret);
 	}
 	line = malloc(sizeof(char) * old_size);
@@ -76,7 +76,7 @@ int proc_file_commands(char *file_path, int *exe_ret)
 			return (*exe_ret);
 		buffer[b_read] = '\0';
 		line_size += b_read;
-		line = _realloc(line, old_size, line_size);
+		line = _reallocate(line, old_size, line_size);
 		_strcat(line, buffer);
 		old_size = line_size;
 	} while (b_read);
@@ -91,16 +91,16 @@ int proc_file_commands(char *file_path, int *exe_ret)
 				line[i] = ' ';
 		}
 	}
-	variable_replacement(&line, exe_ret);
+	var_replace(&line, exe_ret);
 	handle_line(&line, line_size);
 	args = _strtok(line, " ");
 	free(line);
 	if (!args)
 		return (0);
-	if (check_args(args) != 0)
+	if (check_arguments(args) != 0)
 	{
 		*exe_ret = 2;
-		free_args(args, args);
+		free_argumentsmemo(args, args);
 		return (*exe_ret);
 	}
 	front = args;
@@ -111,13 +111,13 @@ int proc_file_commands(char *file_path, int *exe_ret)
 		{
 			free(args[i]);
 			args[i] = NULL;
-			ret = call_args(args, front, exe_ret);
+			ret = call_arguments(args, front, exe_ret);
 			args = &args[++i];
 			i = 0;
 		}
 	}
 
-	ret = call_args(args, front, exe_ret);
+	ret = call_arguments(args, front, exe_ret);
 
 	free(front);
 	return (ret);

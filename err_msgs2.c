@@ -1,20 +1,20 @@
 #include "shell.h"
 
-char *error_126(char **args);
-char *error_127(char **args);
+char *error_126_permisiondenied(char **args);
+char *error_127_commandnotfound(char **args);
 
 /**
- * error_126 - Creates an error message for permission denied failures.
+ * error_126_permisiondenied - Creates an error message for permission denied failures.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
  */
-char *error_126(char **args)
+char *error_126_permisiondenied(char **args)
 {
 	char *error, *hist_str;
 	int len;
 
-	hist_str = _itoa(hist);
+	hist_str = _itoa_integer_to_string(hist);
 	if (!hist_str)
 		return (NULL);
 
@@ -38,17 +38,17 @@ char *error_126(char **args)
 }
 
 /**
- * error_127 - Creates an error message for command not found failures.
+ * error_127_commandnotfound - Creates an error message for command not found failures.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
  */
-char *error_127(char **args)
+char *error_127_commandnotfound(char **args)
 {
 	char *error, *hist_str;
 	int len;
 
-	hist_str = _itoa(hist);
+	hist_str = _itoa_integer_to_string(hist);
 	if (!hist_str)
 		return (NULL);
 

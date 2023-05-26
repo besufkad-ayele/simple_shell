@@ -1,7 +1,7 @@
 #include "shell.h"
 
-char *fill_path_dir(char *path);
-list_t *get_path_dir(char *path);
+char *fill_path_directories(char *path);
+list_t *get_path_directories(char *path);
 
 /**
  * get_location - Locates a command in the PATH.
@@ -16,11 +16,11 @@ char *get_location(char *command)
 	list_t *dirs, *head;
 	struct stat st;
 
-	path = _getenv("PATH");
+	path = _getenv_envpath("PATH");
 	if (!path || !(*path))
 		return (NULL);
 
-	dirs = get_path_dir(*path + 5);
+	dirs = get_path_directories(*path + 5);
 	head = dirs;
 
 	while (dirs)
@@ -35,7 +35,7 @@ char *get_location(char *command)
 
 		if (stat(temp, &st) == 0)
 		{
-			free_list(head);
+			free_list_t(head);
 			return (temp);
 		}
 
@@ -43,25 +43,25 @@ char *get_location(char *command)
 		free(temp);
 	}
 
-	free_list(head);
+	free_list_t(head);
 
 	return (NULL);
 }
 
 /**
- * fill_path_dir - Copies path but also replaces leading/sandwiched/trailing
+ * fill_path_directories - Copies path but also replaces leading/sandwiched/trailing
  *		   colons (:) with current working directory.
  * @path: The colon-separated list of directories.
  *
  * Return: A copy of path with any leading/sandwiched/trailing colons replaced
  *	   with the current working directory.
  */
-char *fill_path_dir(char *path)
+char *fill_path_directories(char *path)
 {
 	int i, length = 0;
 	char *path_copy, *pwd;
 
-	pwd = *(_getenv("PWD")) + 4;
+	pwd = *(_getenv_envpath("PWD")) + 4;
 	for (i = 0; path[i]; i++)
 	{
 		if (path[i] == ':')
@@ -104,19 +104,19 @@ char *fill_path_dir(char *path)
 }
 
 /**
- * get_path_dir - Tokenizes a colon-separated list of
+ * get_path_directories - Tokenizes a colon-separated list of
  *                directories into a list_s linked list.
  * @path: The colon-separated list of directories.
  *
  * Return: A pointer to the initialized linked list.
  */
-list_t *get_path_dir(char *path)
+list_t *get_path_directories(char *path)
 {
 	int index;
 	char **dirs, *path_copy;
 	list_t *head = NULL;
 
-	path_copy = fill_path_dir(path);
+	path_copy = fill_path_directories(path);
 	if (!path_copy)
 		return (NULL);
 	dirs = _strtok(path_copy, ":");
@@ -128,7 +128,7 @@ list_t *get_path_dir(char *path)
 	{
 		if (add_node_end(&head, dirs[index]) == NULL)
 		{
-			free_list(head);
+			free_list_t(head);
 			free(dirs);
 			return (NULL);
 		}

@@ -1,12 +1,12 @@
 #include "shell.h"
 /**
- * add_numbers - Adds two numbers.
+ * add_nums - Adds two numbers.
  * @a: The first number.
  * @b: The second number.
  *
  * Return: The sum of the two numbers.
  */
-int add_numbers(int a, int b)
+int add_nums(int a, int b)
 {
     return a + b;
 }
@@ -22,7 +22,7 @@ int main(void)
     int num2 = 10;
     int sum;
 
-    sum = add_numbers(num1, num2);
+    sum = add_nums(num1, num2);
 
     printf("The sum of %d and %d is %d\n", num1, num2, sum);
 

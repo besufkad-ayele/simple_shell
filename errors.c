@@ -1,16 +1,16 @@
 #include "shell.h"
 
-int num_len(int num);
-char *_itoa(int num);
+int number_len(int num);
+char *_itoa_integer_to_string(int num);
 int create_error(char **args, int err);
 
 /**
- * num_len - Counts the digit length of a number.
+ * number_len - Counts the digit length of a number.
  * @num: The number to measure.
  *
  * Return: The digit length.
  */
-int num_len(int num)
+int number_len(int num)
 {
 	unsigned int num1;
 	int len = 1;
@@ -34,15 +34,15 @@ int num_len(int num)
 }
 
 /**
- * _itoa - Converts an integer to a string.
+ * _itoa_integer_to_string - Converts an integer to a string.
  * @num: The integer.
  *
  * Return: The converted string.
  */
-char *_itoa(int num)
+char *_itoa_integer_to_string(int num)
 {
 	char *buffer;
-	int len = num_len(num);
+	int len = number_len(num);
 	unsigned int num1;
 
 	buffer = malloc(sizeof(char) * (len + 1));
@@ -86,10 +86,10 @@ int create_error(char **args, int err)
 	switch (err)
 	{
 	case -1:
-		error = error_env(args);
+		error = error_envshellby(args);
 		break;
 	case 1:
-		error = error_1(args);
+		error = error_1_aliasbyvalue(args);
 		break;
 	case 2:
 		if (*(args[0]) == 'e')
@@ -100,10 +100,10 @@ int create_error(char **args, int err)
 			error = error_2_cd(args);
 		break;
 	case 126:
-		error = error_126(args);
+		error = error_126_permisiondenied(args);
 		break;
 	case 127:
-		error = error_127(args);
+		error = error_127_commandnotfound(args);
 		break;
 	}
 	write(STDERR_FILENO, error, _strlen(error));

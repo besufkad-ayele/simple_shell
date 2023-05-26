@@ -1,22 +1,22 @@
 #include "shell.h"
 
-char *error_env(char **args);
-char *error_1(char **args);
+char *error_envshellby(char **args);
+char *error_1_aliasbyvalue(char **args);
 char *error_2_exit(char **args);
 char *error_2_cd(char **args);
 char *error_2_syntax(char **args);
 /**
- * error_env - Creates an error message for shellby_env errors.
+ * error_envshellby - Creates an error message for shellby_envcurrent errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
  */
-char *error_env(char **args)
+char *error_envshellby(char **args)
 {
 	char *error, *hist_str;
 	int len;
 
-	hist_str = _itoa(hist);
+	hist_str = _itoa_integer_to_string(hist);
 	if (!hist_str)
 		return (NULL);
 
@@ -41,12 +41,12 @@ char *error_env(char **args)
 }
 
 /**
- * error_1 - Creates an error message for shellby_alias errors.
+ * error_1_aliasbyvalue - Creates an error message for shellprint_aliasbyvalue errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
  */
-char *error_1(char **args)
+char *error_1_aliasbyvalue(char **args)
 {
 	char *error;
 	int len;
@@ -64,7 +64,7 @@ char *error_1(char **args)
 }
 
 /**
- * error_2_exit - Creates an error message for shellby_exit errors.
+ * error_2_exit - Creates an error message for shellby_exitnormal errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
@@ -74,7 +74,7 @@ char *error_2_exit(char **args)
 	char *error, *hist_str;
 	int len;
 
-	hist_str = _itoa(hist);
+	hist_str = _itoa_integer_to_string(hist);
 	if (!hist_str)
 		return (NULL);
 
@@ -98,7 +98,7 @@ char *error_2_exit(char **args)
 }
 
 /**
- * error_2_cd - Creates an error message for shellby_cd errors.
+ * error_2_cd - Creates an error message for shellby_cdchanged errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
@@ -108,7 +108,7 @@ char *error_2_cd(char **args)
 	char *error, *hist_str;
 	int len;
 
-	hist_str = _itoa(hist);
+	hist_str = _itoa_integer_to_string(hist);
 	if (!hist_str)
 		return (NULL);
 
@@ -147,7 +147,7 @@ char *error_2_syntax(char **args)
 	char *error, *hist_str;
 	int len;
 
-	hist_str = _itoa(hist);
+	hist_str = _itoa_integer_to_string(hist);
 	if (!hist_str)
 		return (NULL);
 
